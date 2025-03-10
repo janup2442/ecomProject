@@ -1,8 +1,9 @@
 const authAdmin = (req,res,next)=>{
     if(req.cookies.authToken){
-        next();
+        // the check the validity of the authToken here 
+        res.status(200).end(); // tmeperory check
     }else{
-        res.status(400).json({message:"Bad request , PLease login"})
+        res.status(401).json({message:"Bad request , PLease login"})
     }
 }
 

@@ -7,11 +7,11 @@ import authAdmin from '../../middlewere/admin/authAdmin.js'
 dotenv.config()
 const adminRoute = express.Router()
 
-adminRoute.use('/home',adminHome)
-adminRoute.use('/login',adminLogin)
 adminRoute.get('/auth',authAdmin,(req,res)=>{
     res.status(200).end();
 })
+adminRoute.use('/home',adminHome)
+adminRoute.use('/login',adminLogin)
 
 export default adminRoute
 

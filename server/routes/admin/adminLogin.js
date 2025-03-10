@@ -4,11 +4,11 @@ import bcrypt from 'bcryptjs'
 import Staff from '../../model/admin/staffModel.js'
 const adminLogin = express.Router()
 
-// validate the req.body here before processing
+// validate the req.body here before processing using middle were
 
 adminLogin.post('/',(req,res)=>{
     console.log(req.body);
-    const {userEmail  , userPassword} = req.body
+    const {userEmail  , userPassword} = req.body;
 
     try{
         const validateUser = async ()=>{
@@ -31,7 +31,7 @@ adminLogin.post('/',(req,res)=>{
                         message:"LoggenIn"
                     })
                 }else {
-                    res.status(401).json({message:"Invalid credentials"})
+                    res.status(401).json({message:"Invalid Email or Password"})
                 }
             }else{
                 res.status(401).json({message:"User does not exist or Invalid Email Id"})
