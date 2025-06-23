@@ -1,28 +1,23 @@
 import express from 'express'
 import cors from 'cors'
-import { configDotenv } from 'dotenv'
-// import connectDb from './db/db.js';
-import adminRoute from './routes/admin/adminRoute.js';
-import userRoute from './routes/client/userRoute.js';
-import cookieParser from 'cookie-parser';
-configDotenv();
-const app = express();
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors({
-    credentials:true,
-    origin:"https://automatic-fishstick-wpjjp696wxxh5rg7-5173.app.github.dev"
-}))
+import dotenv from 'dotenv'
+import adminAuthRoutes from './routes/admin/authRoutes.js'
+import productRouteHandler from './routes/client/productRoutes.js'
+
+dotenv.config()
+const app = express()
+
+app.use(cors())
+app.use(express.json())
+
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} from ${req.headers.origin || req.ip}`);
+    next();
+});
+app.use('/api',productRouteHandler)
+app.use('/api/admin', adminAuthRoutes)
+
+app.get('/', (req, res) => res.send('API is running...'))
 
 
-app.use('/api/admin',adminRoute);
-app.use('/api/user',userRoute);
-
-app.get('/logout',(req,res)=>{
-    res.clearCookie('authToken');
-    res.status(200).end();
-})
-
-app.listen(8000 , ()=>{
-    console.log("server is  running on 8000");
-})
+export default app
