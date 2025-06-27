@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { NavLink , Route , Routes } from 'react-router';
+import { Link } from 'react-router';
 
-export default function Navbar({isLoggedIn , setLogin}) {
+export default function Navbar({isLoggedIn}) {
     const [categoryList, setCategoryList] = useState([]);
     const [isLoading, setLoading] = useState(true)
     useEffect(() => {
         const getAllCategory = async () => {
             setLoading(true)
             try {
-                const res = await axios.get('http://localhost:8000/api/category');
+                const res = await axios.get(`${import.meta.env.VITE_API_APP_HOST}/api/category`);
                 setCategoryList(res.data);
                 setLoading(false)
             } catch (err) {
@@ -80,12 +81,12 @@ export default function Navbar({isLoggedIn , setLogin}) {
                         </li>
 
                         <li className='nav-item mx-2'>
-                            <a className='nav-link' href=''>
+                            <Link className='nav-link' to={isLoggedIn?'/user/profile/'+localStorage.getItem('id'):'/login'}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="dark" className="bi bi-person-circle" viewBox="0 0 16 16">
                                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
                                     <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
                                 </svg>
-                            </a>
+                            </Link>
                         </li>
                     </ul>
 

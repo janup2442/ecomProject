@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState ,useEffect} from 'react';
+import { useNavigate } from 'react-router';
 
-const LoginPage = () => {
+const LoginPage = ({setIsAuthenticated,isloggedIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [clientError, setClientError] = useState('');
-  const [serverError, setServerError] = useState('');
+  const [clientError, setClientError] = useState(null);
+  const [serverError, setServerError] = useState(null);
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(isloggedIn){
+      navigate('/')
+    }
+  },[])
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -17,7 +25,8 @@ const LoginPage = () => {
     return regex.test(password);
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setClientError('');
     setServerError('');
@@ -26,21 +35,32 @@ const LoginPage = () => {
       setClientError('Please enter a valid email address.');
       return;
     }
-
-    if (!validatePassword(password)) {
+    //!validatePassword(password)
+    if (false) {
       setClientError(
         'Password must be at least 8 characters long, include uppercase, lowercase, number, and a special character.'
       );
       return;
     }
+    try {
+      const result = await axios.post(`${import.meta.env.VITE_API_APP_HOST}/user/login`,{
+        emailOrPhone:email,
+        password:password
+      })
 
-    try{
-        console.log(e.target.value);
-        
-    }catch(err){
-
+      if(result?.status<400 && result?.status>=200){
+        localStorage.setItem('authToken',result.data.token);
+        localStorage.setItem('id',result.data.userId)
+        setIsAuthenticated(true);
+        navigate('/');
+      }
+    } catch (error) {
+      setServerError("Something went wrong")
+      console.log(error);
+      
+      setIsAuthenticated(false)
     }
-  };
+  }
 
 
 
@@ -53,14 +73,15 @@ const LoginPage = () => {
           {serverError && <div className="alert alert-danger">{serverError}</div>}
 
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email address</label>
+            <label htmlFor="email" className="form-label">Email Address</label>
             <input
               type="email"
               className="form-control"
               id="email"
-              placeholder="Enter email"
+              placeholder="Enter email or Phone"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              name='emailOrPhone'
               required
             />
           </div>
@@ -74,6 +95,7 @@ const LoginPage = () => {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              name='password'
               required
             />
           </div>

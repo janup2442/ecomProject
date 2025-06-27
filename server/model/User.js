@@ -4,27 +4,33 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    Fname:{
+    fName:{
         type:String,
         default:"Guest"
     },
-    Mname:{
+    mName:{
         type:String,
         default:""
     },
-    Lname:{
+    lName:{
         type:String,     
     },
     email:{
         type:String,
         require:true,
+        unique:true
     },
     password:{
         type:String,
         require:true
     },
-    mobile:{
-        type:String
+    phone:{
+        type:String,
+        unique:true
+    },
+    role:{
+        type:String,
+        default:'customer'
     }
 },{timestamps:true});
 
