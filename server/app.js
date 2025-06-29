@@ -8,7 +8,10 @@ import userRoute from './routes/client/authRoutes.js'
 dotenv.config()
 const app = express()
 
-app.use(cors())
+app.use(cors({
+    origin:['http://localhost:5173','https://ecomproject-production-9f06.up.railway.app'],
+    credentials:true
+}))
 app.use(express.json())
 
 app.use((req, res, next) => {
