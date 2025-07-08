@@ -167,7 +167,8 @@ function ProductAddForm({ category }) {
           withCredentials: true
         }
       );
-      alert("Product sent successfully");
+      if (res.status >= 200 && res.status < 400)
+        alert("Product sent successfully");
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -346,7 +347,9 @@ function CategoryForm({ category, fetchNewCategoryList }) {
       alert("Error: Please enter a valid categroy name")
     } else {
       try {
-        const res = await axios.post(`${import.meta.env.VITE_API_HOST}/api/admin/product/category`, { name })
+        const res = await axios.post(`${import.meta.env.VITE_API_HOST}/api/admin/product/category`, { name }, {
+          withCredentials: true
+        })
 
         alert(res.data.name, " : new categroy added successfully");
         await fetchNewCategoryList();
@@ -371,6 +374,8 @@ function CategoryForm({ category, fetchNewCategoryList }) {
       await axios.post(`${import.meta.env.VITE_API_HOST}/api/admin/product/subcategory`, {
         categoryName: selectedCategory,
         subcategoryName: newSubcategory
+      }, {
+        withCredentials: true
       })
       alert("Subcategory added successfully")
       await fetchNewCategoryList()
@@ -463,7 +468,9 @@ function InventoryOverview() {
     console.log(e.target.value);
 
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_HOST}/api/admin/product/getProduct?sku=${e.target.value}`)
+      const res = await axios.get(`${import.meta.env.VITE_API_HOST}/api/admin/product/getProduct?sku=${e.target.value}`, {
+        withCredentials: true
+      })
       setSearchProduct(res.data);
       // console.log(e.target.value);
       console.log(res.data);
