@@ -1,16 +1,15 @@
 import jwt from 'jsonwebtoken'
 import {config} from 'dotenv'
-import User from '../model/User.js';
+import {User} from '../model/User.js';
 config();
 
 
 const userAuth = async (req, res, next) => {
-  const authHeader = req.headers.authorization
-  
-  if (!authHeader) {
-    return res.status(401).json({ message: 'Unauthorized , Access Denied' })
+  const token = req.cookies.token; // Read token from cookie
+
+  if (!token) {
+    return res.status(401).json({ message: 'Not authenticated' });
   }
-  const token = authHeader
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     const user = await User.findById(decoded.id)

@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import adminAuthRoutes from './routes/admin/authRoutes.js'
 import productRouteHandler from './routes/client/productRoutes.js'
 import userRoute from './routes/client/authRoutes.js'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 const app = express()
@@ -13,6 +14,7 @@ app.use(cors({
     credentials:true
 }))
 app.use(express.json())
+app.use(cookieParser())
 
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} from ${req.headers.origin || req.ip}`);
@@ -23,6 +25,11 @@ app.use('/api/admin', adminAuthRoutes)
 app.use('/user',userRoute)
 
 app.get('/', (req, res) => res.send('API is running...'))
+
+
+app.all('*',(req,res)=>{
+    res.status(200).json({message:"Invalid Route...please contact to administrator"})
+})
 
 
 export default app

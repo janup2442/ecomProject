@@ -1,30 +1,25 @@
+
 import { Outlet, Link } from "react-router";
-
-
+import {useEffect} from 'react'
+import { useNavigate } from "react-router";
+import {useAuth} from '../authContext'
+import Navbar from '../component/navbar'
+import Divider from "@mui/material/Divider";
 export default function Home() {
-    const handleClick = () => {
-        localStorage.removeItem('adminToken')
-    }
+    const {isAuthenticated} = useAuth();
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if(!isAuthenticated){
+            navigate('/login');
+        }
+    })
     return (
 
         <>
             <div>
-                <div>
-                    <div className="navbar">
-                        <p className="navbar-brand">Admin Portal</p>
-
-                        <div>
-                            <div className="hstack gap-2">
-                                <Link to={'/'}>Dashboard</Link>
-                                <Link to={'product'}>Product</Link>
-                                <Link to={'user'}>User</Link>
-                                <Link to={'order'}>Order</Link>
-                                <Link to={'/login'} onClick={handleClick}>Log Out</Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
+                <Navbar/>
+                <Divider/>
+                <div className="border m-3 rounded shadow-sm">
                     <Outlet />
                 </div>
             </div>

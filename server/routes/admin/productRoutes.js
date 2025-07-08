@@ -8,7 +8,9 @@ import cloudinary from '../../config/cloudinary.js';
 const productRouter = Router();
 const upload = multer();
 
-
+productRouter.get('/',(req,res)=>{
+    res.json({message:"You are inside product route"})
+})
 productRouter.post('/category', setNewCategory);
 productRouter.post('/subcategory', addSubCategory);
 productRouter.post('/addProduct', upload.array('images', 4), addProduct)

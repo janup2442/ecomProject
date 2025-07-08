@@ -13,7 +13,9 @@ export default function Product() {
   // Function to fetch category objects and set state
   const fetchCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/category') // Adjust endpoint as needed
+      const res = await axios.get(`${import.meta.env.VITE_API_HOST}/api/category`, {
+        withCredentials: true
+      }) // Adjust endpoint as needed
       setCategory(res.data)
       console.log(res.data);
 
@@ -158,9 +160,12 @@ function ProductAddForm({ category }) {
     formData.append('SKU', SKU);
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/admin/product/addProduct",
+        `${import.meta.env.VITE_API_HOST}/api/admin/product/addProduct`,
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          withCredentials: true
+        }
       );
       alert("Product sent successfully");
       setLoading(false);
@@ -341,7 +346,7 @@ function CategoryForm({ category, fetchNewCategoryList }) {
       alert("Error: Please enter a valid categroy name")
     } else {
       try {
-        const res = await axios.post(`http://localhost:8000/api/admin/product/category`, { name })
+        const res = await axios.post(`${import.meta.env.VITE_API_HOST}/api/admin/product/category`, { name })
 
         alert(res.data.name, " : new categroy added successfully");
         await fetchNewCategoryList();
@@ -363,7 +368,7 @@ function CategoryForm({ category, fetchNewCategoryList }) {
       return
     }
     try {
-      await axios.post('http://localhost:8000/api/admin/product/subcategory', {
+      await axios.post(`${import.meta.env.VITE_API_HOST}/api/admin/product/subcategory`, {
         categoryName: selectedCategory,
         subcategoryName: newSubcategory
       })
@@ -440,7 +445,9 @@ function InventoryOverview() {
   const handleProductUpdate = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:8000/api/admin/product/inventoryoverview');
+      const res = await axios.get(`${import.meta.env.VITE_API_HOST}/api/admin/product/inventoryoverview`, {
+        withCredentials: true
+      });
 
       setProductCount(res.data);
       setLoading(false);
@@ -452,18 +459,17 @@ function InventoryOverview() {
 
   const handleProductSearch = async (e) => {
     e.preventDefault();
-    if(e.target.value == "") return;
+    if (e.target.value == "") return;
     console.log(e.target.value);
-    
+
     try {
-      const res = await axios.get(`http://localhost:8000/api/admin/product/getProduct?sku=${e.target.value}`)
+      const res = await axios.get(`${import.meta.env.VITE_API_HOST}/api/admin/product/getProduct?sku=${e.target.value}`)
       setSearchProduct(res.data);
       // console.log(e.target.value);
       console.log(res.data);
-      
+
     } catch (err) {
       console.log(err);
-      
     }
   }
 
@@ -478,7 +484,7 @@ function InventoryOverview() {
           <div className='d-flex justify-content-center align-items-center flex-column py-2 shadow-sm border rounded'>
             {
               totalProducts ? (
-                <p className='fs-4 fw-semibold mt-2'>{totalProducts.productCount}</p>
+                <p className='fs-4 fw-semibold mt-2'>{totalProducts.productCount} items</p>
               ) : (
                 <div className='spinner-border text-primary mt-2' role='status'></div>
               )
@@ -491,7 +497,7 @@ function InventoryOverview() {
           <div className='d-flex justify-content-center align-items-center flex-column py-2 shadow-sm border rounded'>
             {
               totalProducts ? (
-                <p className='fs-4 fw-semibold mt-2'>{totalProducts.totalValuation}</p>
+                <p className='fs-4 fw-semibold mt-2'>{totalProducts.totalValuation} INR</p>
               ) : (
                 <div className='spinner-border text-primary mt-2' role='status'></div>
               )

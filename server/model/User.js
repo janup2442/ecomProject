@@ -30,11 +30,12 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type:String,
-        default:'customer'
+        default:'user'
     }
 },{timestamps:true});
 
 
+
 const User = new mongoose.model('user',userSchema);
 
-export default User;
+export {User};

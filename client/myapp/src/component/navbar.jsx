@@ -17,10 +17,7 @@ export default function Navbar({isLoggedIn}) {
                 alert(err)
             }
         }
-
-
         getAllCategory();
-
     }, [])
 
 

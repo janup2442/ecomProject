@@ -1,18 +1,18 @@
 import axios from 'axios';
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-const LoginPage = ({setIsAuthenticated,isloggedIn}) => {
+const LoginPage = ({ setIsAuthenticated, isloggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [clientError, setClientError] = useState(null);
   const [serverError, setServerError] = useState(null);
   const navigate = useNavigate();
-  useEffect(()=>{
-    if(isloggedIn){
+  useEffect(() => {
+    if (isloggedIn) {
       navigate('/')
     }
-  },[])
+  }, [])
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,22 +43,21 @@ const LoginPage = ({setIsAuthenticated,isloggedIn}) => {
       return;
     }
     try {
-      const result = await axios.post(`${import.meta.env.VITE_API_APP_HOST}/user/login`,{
-        emailOrPhone:email,
-        password:password
+      const result = await axios.post(`${import.meta.env.VITE_API_APP_HOST}/user/login`, {
+        emailOrPhone: email,
+        password: password
+      }, {
+        withCredentials: true
       })
 
-      if(result?.status<400 && result?.status>=200){
-        localStorage.setItem('authToken',result.data.token);
-        localStorage.setItem('id',result.data.userId)
+      if (result?.status < 400 && result?.status >= 200) {
         setIsAuthenticated(true);
         navigate('/');
       }
     } catch (error) {
       setServerError("Something went wrong")
-      console.log(error);
-      
       setIsAuthenticated(false)
+      console.log(error);
     }
   }
 

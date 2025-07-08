@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
+import {useAuth} from '../authContext'
 
-export default function AdminLogin({ setIsAuthenticated }) {
+
+export default function AdminLogin() {
+  const {setIsAuthenticated,isAuthenticated} = useAuth();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailValid, setEmailValid] = useState(null)
@@ -16,6 +19,11 @@ export default function AdminLogin({ setIsAuthenticated }) {
     return re.test(value)
   }
 
+  useEffect(()=>{
+    if(isAuthenticated){
+      navigate('/')
+    }
+  })
   // Password validation (at least 6 chars)
   const validatePassword = (value) => value.length >= 6
 
@@ -36,10 +44,13 @@ export default function AdminLogin({ setIsAuthenticated }) {
     setError('')
     setLoading(true)
     try {
-      const res = await axios.post('http://localhost:8000/api/admin/login', { username: email, password })
-      localStorage.setItem('adminToken', res.data.token)
-      setIsAuthenticated(true)
-      navigate("/");
+      const result = await axios.post(`${import.meta.env.VITE_API_HOST}/api/admin/login`, { email: email, password },{
+        withCredentials:true
+      })
+      if(result.status>=200 && result.status<400){
+        setIsAuthenticated(true)
+        navigate('/')
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed')
     } finally {
