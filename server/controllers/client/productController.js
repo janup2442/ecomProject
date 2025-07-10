@@ -12,9 +12,9 @@ const getAllCategory = async (req,res)=>{
 
 const getAllProduct = async (req,res)=>{
     try{
-        const data = await Product.find();
+        const data = await Product.find({},'price name images discountValue brand rating');
         if(data){
-            res.json(data);
+            res.status(200).json(data);
         }
     }catch(err){
         res.status(500).json(err)

@@ -1,6 +1,6 @@
 
 
-import ClientHomeLayout from './pages/homeLayout.jsx'
+import ClientHomeLayout from './pages/home/homeLayout'
 export default function App(){
   return(
     <>

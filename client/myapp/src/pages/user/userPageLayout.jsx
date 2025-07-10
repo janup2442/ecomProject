@@ -1,8 +1,8 @@
-import { useNavigate, useParams } from "react-router-dom"; // Fixed import
+import { Outlet, useNavigate, useParams } from "react-router-dom"; // Fixed import
 import { useEffect, useState } from 'react';
 import axios from "axios";
 
-export default function UserDashboard({ isloggedIn }) {
+export default function UserDashboardLayout({ isloggedIn }) {
     const [userObject, setUser] = useState({});
     const [alert, setAlert] = useState(null);
     const navigate = useNavigate();
@@ -27,41 +27,14 @@ export default function UserDashboard({ isloggedIn }) {
         }
     };
 
-    useEffect(() => {
-        getUserInfo(); // Call the function
-    }, []); // Fix dependency array
+    // dont forget to call the getUser() , in useEffect
 
-    return (
-        <>
-            {
-                alert != null ? (
-                    <div className="alert alert-danger">{alert}</div>
-                ) : (
-                    <Profile userObject={userObject} />
-                )
-            }
-        </>
-    );
-}
-
-function Profile({ userObject }) {
     return (
         <>
             <div>
-                <Section>
-                    <h2>User Profile</h2>
-                    <p>Name: {userObject?.name || 'Loading...'}</p>
-                    <p>Email: {userObject?.email || 'Loading...'}</p>
-                </Section>
+                <Outlet/>
             </div>
         </>
     );
 }
 
-function Section({ children }) {
-    return (
-        <section className="px-2 py-1 border shadow-sm rounded mx-2 my-3">
-            {children}
-        </section>
-    );
-}

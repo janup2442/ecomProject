@@ -5,12 +5,10 @@ export default function ProductCard({
   image,
   name,
   brand,
-  rating,      // floating value, e.g. 4.3
+  rating = 3.6,      // floating value, e.g. 4.3
   price,
   discount,    // percentage, e.g. 20
-  caption,
-  onAddToCart,
-  onBuyNow,
+  caption = null,
   onWishlist,
   isWishlisted = false,
 }) {
@@ -46,7 +44,7 @@ export default function ProductCard({
   };
 
   return (
-    <div className="card position-relative shadow-sm" style={{ width: 260 }}>
+    <div className="card position-relative shadow-sm">
       {/* Wishlist Heart */}
       <button
         type="button"
@@ -58,7 +56,7 @@ export default function ProductCard({
         <svg
           width="28"
           height="28"
-          viewBox="0 0 24 24"
+          viewBox="0 0 28 28"
           fill={wishlisted ? "red" : "none"}
           stroke="red"
           strokeWidth="2"
@@ -74,27 +72,23 @@ export default function ProductCard({
         src={image}
         className="card-img-top"
         alt={name}
-        style={{ height: 180, objectFit: "cover" }}
+        style={{ objectFit: "cover" }}
       />
 
       <div className="card-body d-flex flex-column">
-        <h5 className="card-title mb-1">{name}</h5>
-        <div className="mb-1 text-muted" style={{ fontSize: "0.95em" }}>{brand}</div>
-        <div className="mb-2">{renderStars()}</div>
-        <div className="mb-2">
-          <span className="fw-bold fs-5 me-2">₹{discountedPrice}</span>
+        <h5 className="card-title">{name}</h5>
+        <div className="text-muted" style={{ fontSize: "0.9em" }}>{brand}</div>
+        <div className="">{renderStars()}</div>
+        <div className="">
+          <span className="fw-semibold me-2">₹{discountedPrice}</span>
           {discount > 0 && (
             <>
-              <span className="text-decoration-line-through text-muted me-1">₹{price}</span>
+              <small className="text-decoration-line-through text-muted me-1">₹{price}</small>
               <span className="badge bg-success">{discount}% OFF</span>
             </>
           )}
         </div>
-        <div className="mb-3" style={{ fontSize: "0.95em" }}>{caption}</div>
-        <div className="mt-auto d-flex gap-2">
-          <button className="btn btn-outline-primary flex-fill" onClick={onAddToCart}>Add to Cart</button>
-          <button className="btn btn-success flex-fill" onClick={onBuyNow}>Buy Now</button>
-        </div>
+        <div className="form-text" style={{ fontSize: "0.8em" }}>{caption}</div>
       </div>
     </div>
   );

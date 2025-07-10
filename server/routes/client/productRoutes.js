@@ -7,6 +7,6 @@ const productRouteHandler  = express.Router();
 
 
 productRouteHandler.get('/category',getAllCategory);
-productRouteHandler.get('/product',getAllProduct);
+productRouteHandler.get('/products',getAllProduct);
 
 export default productRouteHandler
