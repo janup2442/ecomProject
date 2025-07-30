@@ -34,7 +34,9 @@ export default function UserSignUp() {
             setError(false)
         }
         try {
-            const result  = await axios.post(`${import.meta.env.VITE_API_APP_HOST}/user/register`, form);
+            const result  = await axios.post(`${import.meta.env.VITE_API_APP_HOST}/user/register`, form,{
+                withCredentials:true
+            });
             if(result.status<400 && result.status>=200){
                 setSeverError(false);
                 setRegisterSuccess(result.data.message)

@@ -21,4 +21,20 @@ const getAllProduct = async (req,res)=>{
     }
 }
 
-export {getAllCategory,getAllProduct}
+
+const getProductDetail = async (req,res)=>{
+    const id = req.query.id
+    console.log(id);
+    
+    try {
+        const result = await Product.findById(id);
+        if(result){
+            res.status(200).json(result);
+        }else{
+            res.status(400).json({message:"400! Bad Request , Try after sometime"})
+        }
+    } catch (error) {
+        res.status(500).json({message:"something went wrong ,server error"})
+    }
+}
+export {getAllCategory,getAllProduct,getProductDetail}

@@ -5,6 +5,10 @@ import jwt from "jsonwebtoken";
 
 export const userLogin = async (req, res) => {
   const { emailOrPhone, password } = req.body
+
+  if(!(emailOrPhone && password)){
+    return res.status(400).json({message : "invalid credentials"})
+  }
   console.log(emailOrPhone, password);
 
   try {
@@ -63,5 +67,50 @@ export const userRegister = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" })
     }
+  }
+}
+
+
+export const userVerify = async (req, res) => {
+  const token = req.cookies.token; // Read token from cookie
+
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const user = await User.findById(decoded.id)
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid token' })
+    }
+
+    res.status(200).json({message:"Login Successful"});
+  } catch (err) {
+    res.status(401).json({ message: 'Token is not valid' })
+  }
+}
+
+export const getCartItems = async (req,res)=>{
+  const id = req.userId;
+
+  try {
+    const cartItems = await User.findById(id,'cart')
+    if(cartItems){
+       res.status(200).json(cartItems)
+    }else{
+      res.status(401).json({message:"Something went wrong"});
+    }
+  } catch (error) {
+    res.status(500).json({message:"Server error"})
+  }
+}
+
+
+export const getAllOrders = async (req,res)=>{
+  const id = req.userId
+  try {
+    const orderItem = await User.findById(id,'orders')
+  } catch (error) {
+    res.status(500).json({message:"server error"});
   }
 }

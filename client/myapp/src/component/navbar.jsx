@@ -5,8 +5,9 @@ import { Link } from 'react-router';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-
-export default function Navbar({ isLoggedIn }) {
+import {useAuth} from '../AuthContext'
+export default function Navbar() {
+    const {isAuthenticated , setIsAuthenticated} = useAuth();
     const [categoryList, setCategoryList] = useState([]);
     const [isLoading, setLoading] = useState(true)
     useEffect(() => {
@@ -15,10 +16,11 @@ export default function Navbar({ isLoggedIn }) {
             try {
                 const res = await axios.get(`${import.meta.env.VITE_API_APP_HOST}/api/category`);
                 setCategoryList(res.data);
-                setLoading(false)
             } catch (err) {
                 alert(err)
             }
+
+            setLoading(false);
         }
         getAllCategory();
     }, [])
@@ -44,7 +46,7 @@ export default function Navbar({ isLoggedIn }) {
                             </a>
                             <ul className="dropdown-menu">
                                 {
-                                    (!isLoading) && categoryList.length > 0 ? categoryList.map((item) => (<li><a className="dropdown-item" href="#" key={item.id}>{item.name}</a></li>)) : (<li>Loading...</li>)
+                                    (!isLoading) && categoryList.length > 0 ? categoryList.map((item,index) => (<li key={index}><a className="dropdown-item" href="#" key={item.id}>{item.name}</a></li>)) : (<li>Loading...</li>)
                                 }
 
                             </ul>
@@ -67,7 +69,7 @@ export default function Navbar({ isLoggedIn }) {
 
 
                         <li className='nav-item'>
-                            <Link className='nav-link px-2 py-1 rounded shadow-sm'>
+                            <Link to={'/user/wishlist'} className='nav-link px-2 py-1 rounded shadow-sm'>
                                 <ChecklistIcon />
                                 <span className='ms-2'>
                                     WishList
@@ -77,7 +79,7 @@ export default function Navbar({ isLoggedIn }) {
 
                         <li className='nav-item mx-2'>
                             {
-                                isLoggedIn ? (
+                                isAuthenticated ? (
                                     <Link to={'/user/profile'} className='nav-link px-2 py-1 rounded shadow-sm'>
                                         <AccountBoxIcon />
                                     </Link>

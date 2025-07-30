@@ -1,7 +1,7 @@
 
 
 import { Link } from 'react-router'
-import ProductCard from '../../component/productCard'
+import ProductCard from '../../component/productComponents/productCard'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -58,7 +58,6 @@ export default function ProductCatalog() {
                             </div>
                         )
                     }
-
                 </div>
             </div>
         </>

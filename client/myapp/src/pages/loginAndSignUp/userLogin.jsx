@@ -1,15 +1,16 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-
-const LoginPage = ({ setIsAuthenticated, isloggedIn }) => {
+import {useAuth} from '../../AuthContext'
+const LoginPage = () => {
+  const {isAuthenticated,setIsAuthenticated}  = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [clientError, setClientError] = useState(null);
   const [serverError, setServerError] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
-    if (isloggedIn) {
+    if (isAuthenticated) {
       navigate('/')
     }
   }, [])
@@ -51,6 +52,8 @@ const LoginPage = ({ setIsAuthenticated, isloggedIn }) => {
       })
 
       if (result?.status < 400 && result?.status >= 200) {
+        console.log('you just logged in');
+        
         setIsAuthenticated(true);
         navigate('/');
       }

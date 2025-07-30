@@ -2,8 +2,23 @@
 
 
 import mongoose from "mongoose";
+import { SchemaTypes } from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const cartItem = mongoose.Schema({
+    productId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Product'
+    },
+    quantity:{
+        type:Number
+    }
+});
+
+const orderItem = mongoose.Schema({
+    
+})
+
+const userSchema = mongoose.Schema({
     fName:{
         type:String,
         default:"Guest"
@@ -31,6 +46,12 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         default:'user'
+    },
+    cart:{
+        type:[cartItem]
+    },
+    orders:{
+        type:[]
     }
 },{timestamps:true});
 

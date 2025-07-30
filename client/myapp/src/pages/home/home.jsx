@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import ProductCard from '../../component/productCard.jsx'
+import ProductCard from '../../component/productComponents/productCard.jsx'
 import ProductCatalog from '../product/productList.jsx'
 
 export default function ClientHome() {
@@ -13,6 +13,11 @@ export default function ClientHome() {
     //     const skip = (pageNumber -1)*limitPerPage;
 
     // },[pageNumber])
+
+    useEffect(()=>{
+        console.log('you are on home page');
+        
+    },[])
     return (
         <>
             <div className="container">

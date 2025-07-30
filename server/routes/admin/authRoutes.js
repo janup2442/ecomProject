@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { login, verify } from '../../controllers/admin/authController.js'
+import { login , verify } from '../../controllers/admin/adminController.js'
 import productRouter from './productRoutes.js'
 import adminAuth from '../../middlewares/adminAuth.js'
 const router = Router()
