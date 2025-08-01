@@ -28,8 +28,10 @@ export const userLogin = async (req, res) => {
       role: 'user'
     }, process.env.JWT_SECRET, { expiresIn: '1d' })
     res.cookie('token',token,{
-      maxAge:1000*60*60*24,
-      httpOnly:false
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // only over HTTPS in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
     })
     res.status(200).json({message:"User Logged In"})
   } catch (err) {
