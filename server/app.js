@@ -23,12 +23,11 @@ app.use((req, res, next) => {
 app.use('/api',productRouteHandler)
 app.use('/api/admin', adminAuthRoutes)
 app.use('/user',userRoute)
-
 app.get('/', (req, res) => res.send('API is running...'))
 
 
 app.all('*',(req,res)=>{
-    res.status(200).json({message:"Invalid Route...please contact to administrator"})
+    res.status(200).json({message:"Invalid Route...please contact to administrator or try to email us at anupexperience123@gmail.com"})
 })
 
 
