@@ -1,5 +1,5 @@
 import express from 'express'
-import { getCartItems, userLogin, userRegister, userVerify } from '../../controllers/client/userController.js'
+import { addToCartAction, getCartItems, userLogin, userRegister, userVerify, updateCartItemQuantity, removeFromCart } from '../../controllers/client/userController.js'
 import userAuth from '../../middlewares/clientAuth.js'
 
 const userRoute = express.Router()
@@ -20,8 +20,14 @@ userRoute.get('/verify',userVerify)
 userRoute.get('/profile',userAuth,(req,res)=>{
     console.log('got the request');
 })
-userRoute.get('/cart',userAuth,getCartItems)
-userRoute.get('/orders',userAuth,)
+userRoute.get('/cart',userAuth,getCartItems);
+userRoute.post('/addtocart',userAuth,addToCartAction);
+userRoute.put('/updatecart',userAuth,updateCartItemQuantity);
+userRoute.delete('/removefromcart',userAuth,removeFromCart);
+userRoute.get('/orders',userAuth,(req,res)=>{
+    console.log("order req recieved");
+    res.end();
+})
 
 
 

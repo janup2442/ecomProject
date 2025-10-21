@@ -1,5 +1,10 @@
 // ProductCard.jsx
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { useCart } from "../../CartContext";
+import { useAuth } from "../../AuthContext";
+import { useToast } from "../Toast";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 export default function ProductCard({
   image,
@@ -11,8 +16,14 @@ export default function ProductCard({
   caption = null,
   onWishlist,
   isWishlisted = false,
+  productId // Add productId prop for cart functionality
 }) {
   const [wishlisted, setWishlisted] = useState(isWishlisted);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { addToast } = useToast();
+  const navigate = useNavigate();
 
   // Calculate discounted price
   const discountedPrice = discount
@@ -43,8 +54,29 @@ export default function ProductCard({
     if (onWishlist) onWishlist(!wishlisted);
   };
 
+  const handleQuickAddToCart = async (e) => {
+    e.preventDefault(); // Prevent navigation to product page
+    e.stopPropagation();
+    
+    if (!isAuthenticated) {
+      addToast('Please login to add items to cart', 'warning');
+      navigate('/login');
+      return;
+    }
+
+    setIsAddingToCart(true);
+    const result = await addToCart(productId, 1);
+    setIsAddingToCart(false);
+
+    if (result.success) {
+      addToast('Added to cart successfully!', 'success');
+    } else {
+      addToast(result.message, 'error');
+    }
+  };
+
   return (
-    <div className="card position-relative shadow-sm">
+    <div className="card position-relative shadow-sm h-100">
       {/* Wishlist Heart */}
       <button
         type="button"
@@ -67,19 +99,22 @@ export default function ProductCard({
         </svg>
       </button>
 
-      {/* Product Image */}
-      <img
-        src={image}
-        className="card-img-top"
-        alt={name}
-        style={{ objectFit: "cover" }}
-      />
+      {/* Product Image with Fixed Aspect Ratio */}
+      <div className="position-relative overflow-hidden" style={{ height: "200px" }}>
+        <img
+          src={image}
+          className="card-img-top w-100 h-100"
+          alt={name}
+          style={{ objectFit: "cover" }}
+          loading="lazy"
+        />
+      </div>
 
       <div className="card-body d-flex flex-column">
-        <h5 className="card-title">{name}</h5>
-        <div className="text-muted" style={{ fontSize: "0.9em" }}>{brand}</div>
-        <div className="">{renderStars()}</div>
-        <div className="">
+        <h5 className="card-title text-truncate" title={name}>{name}</h5>
+        <div className="text-muted mb-1" style={{ fontSize: "0.9em" }}>{brand}</div>
+        <div className="mb-2">{renderStars()}</div>
+        <div className="mt-auto">
           <span className="fw-semibold me-2">₹{discountedPrice}</span>
           {discount > 0 && (
             <>
@@ -88,7 +123,28 @@ export default function ProductCard({
             </>
           )}
         </div>
-        <div className="form-text" style={{ fontSize: "0.8em" }}>{caption}</div>
+        {caption && (
+          <div className="form-text mt-1" style={{ fontSize: "0.8em" }}>{caption}</div>
+        )}
+      </div>
+      
+      {/* Quick Add to Cart Button */}
+      <div className="card-footer bg-transparent p-2">
+        <button
+          className="btn btn-outline-primary btn-sm w-100 d-flex align-items-center justify-content-center"
+          onClick={handleQuickAddToCart}
+          disabled={isAddingToCart}
+        >
+          <AddShoppingCartIcon fontSize="small" className="me-2" />
+          {isAddingToCart ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Adding...
+            </>
+          ) : (
+            'Add to Cart'
+          )}
+        </button>
       </div>
     </div>
   );

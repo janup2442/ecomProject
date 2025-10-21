@@ -1,3 +1,11 @@
+/*
+Question : What is the most complicated code you have written independently without AI or anyone else's assistance?
+
+written by : Anup Jaiswal (MMMUT)
+Date : 12/10/2025
+*/
+
+
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
@@ -5,6 +13,7 @@ import adminAuthRoutes from './routes/admin/authRoutes.js'
 import productRouteHandler from './routes/client/productRoutes.js'
 import userRoute from './routes/client/authRoutes.js'
 import cookieParser from 'cookie-parser'
+
 
 dotenv.config()
 const app = express()

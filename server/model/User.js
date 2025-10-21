@@ -3,6 +3,7 @@
 
 import mongoose from "mongoose";
 import { SchemaTypes } from "mongoose";
+import { Product } from "./Product.js";
 
 const cartItem = mongoose.Schema({
     productId:{
@@ -49,9 +50,6 @@ const userSchema = mongoose.Schema({
     },
     cart:{
         type:[cartItem]
-    },
-    orders:{
-        type:[]
     }
 },{timestamps:true});
 

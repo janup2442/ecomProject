@@ -23,3 +23,20 @@ const showproduct =async ()=>{
 }
 
 showproduct();
+
+
+
+const getUserData = async ()=>{
+        try {
+            const result = await axios.get(`${import.meta.env.VITE_API_APP_HOST}/user/profile`,{
+                withCredentials:true
+            })
+
+            if(result.status>=200 && result.status<400){
+                   
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+}

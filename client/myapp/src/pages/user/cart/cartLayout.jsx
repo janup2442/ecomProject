@@ -1,7 +1,13 @@
 import { Navigate, Outlet } from "react-router";
 import {useAuth} from '../../../AuthContext'
+import Loader from '../../../component/loader'
 export default function CartLayout() {
-    const {isAuthenticated} = useAuth();
+    const {isAuthenticated, isLoading} = useAuth();
+    
+    if (isLoading) {
+        return <Loader message="Checking authentication..." />;
+    }
+    
     return(
         <>
             <div>
@@ -10,7 +16,7 @@ export default function CartLayout() {
             </div>
             <div>
                 {
-                    isAuthenticated?<Outlet/>:<Navigate  to={'/login'} replace/>
+                    isAuthenticated === true ? <Outlet/> : <Navigate  to={'/login'} replace/>
                 }
             </div>
         </>

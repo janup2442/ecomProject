@@ -16,7 +16,7 @@ export default function UserProfile() {
             if(result.status>=200 && result.status<400){
                 console.log("you just loogeed out");
                 
-                setIsAuthenticated(null)
+                setIsAuthenticated(false)
                 navigate('/', {replace:true});
             }
         } catch (error) {
@@ -37,7 +37,7 @@ export default function UserProfile() {
 
 
                 Underdevelopment , Will be available in a while.
-                <Button variant="outline" onClick={logoutUser}>Logout</Button>
+                <Button variant="outline" className="btn btn-primary" onClick={logoutUser}>Logout</Button>
             </div>
         </>
     )

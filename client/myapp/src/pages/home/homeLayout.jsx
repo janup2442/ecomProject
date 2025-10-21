@@ -18,12 +18,18 @@ import CheckoutPage from '../user/cart/checkout.jsx'
 import OrderPage from '../user/orderPage.jsx'
 import Wishlist from '../user/wishList.jsx'
 import CartLayout from '../user/cart/cartLayout.jsx'
+import { PageLoader } from '../../component/loader.jsx'
 export default function ClientHomeLayout() {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, isLoading } = useAuth();
+    
     useEffect(() => {
         console.log("you are on home layout page");
-
     }, [])
+
+    if (isLoading) {
+        return <PageLoader message="Setting up your experience..." />;
+    }
+
     return (
 
         <>
@@ -40,7 +46,15 @@ export default function ClientHomeLayout() {
                         <Route path='/register' element={<UserSignUp />} />
 
 
-                        <Route path='/user' element={isAuthenticated ? <UserDashboardLayout /> : <Navigate to={'/login'} replace />}>
+                        <Route path='/user' element={
+                            isLoading ? (
+                                <PageLoader message="Verifying authentication..." />
+                            ) : isAuthenticated === true ? (
+                                <UserDashboardLayout />
+                            ) : (
+                                <Navigate to={'/login'} replace />
+                            )
+                        }>
                             <Route path='profile' index element={<UserProfile />} />
 
                             <Route path='cart' element={<CartLayout/>}>

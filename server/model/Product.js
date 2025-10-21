@@ -11,7 +11,7 @@ const subcategorySchema = new mongoose.Schema({
         maxlength: 50,
         unique: true
     }
-}, { _id: false }); // Prevents separate _id for subcategories if embedded
+}, { _id: false }); 
 
 // Category Schema
 const categorySchema = new mongoose.Schema({
@@ -79,7 +79,7 @@ const productSchema = new mongoose.Schema({
         min: 0
     },
     images: {
-        type: [String], // Array of Cloudinary URLs
+        type: [String],
     },
     stock: {
         type: Number,
@@ -150,7 +150,7 @@ categorySchema.set('toJSON', {
 });
 
 
-const Product = mongoose.model('product',productSchema);
+const Product = mongoose.model('Product',productSchema);
 const Category  = mongoose.model('category',categorySchema);
 const productReview = mongoose.model('review',productReviewSchema)
 

@@ -42,7 +42,7 @@ export default function ProductPage() {
 
                 {
                     product ? (
-                        <Child data={product} />
+                        <Child data={product} id={id} />
                     ) : (
                         <div className='text-center'>
                             <CircularProgress />
@@ -56,7 +56,7 @@ export default function ProductPage() {
 }
 
 
-function Child({ data }) {
+function Child({ data ,id}) {
 
     const { name, price, discountValue, images, rating, brand, stock, status, category, subcategory, description, review, weight, dimension, colorVariants } = data;
 
@@ -117,7 +117,7 @@ function Child({ data }) {
         <>
             <div className='row row-cols-1 row-cols-md-2'>
                 <div>
-                    <ProductSlider imagesArray={images} />
+                    <ProductSlider imagesArray={images} productId={id} />
                 </div>
                 <div>
                     <ProductDetails title={name} brand={brand} category={category} subcategory={subcategory}>

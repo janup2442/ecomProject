@@ -8,10 +8,12 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // null = loading
+  const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
+  const [isLoading, setIsLoading] = useState(true);
   
   const authCheck = async () => {
     try {
+      setIsLoading(true);
       const result = await axios.get(`${import.meta.env.VITE_API_APP_HOST}/user/verify`, {
         withCredentials: true
       })
@@ -20,15 +22,17 @@ export function AuthProvider({ children }) {
       }
     } catch (error) {
       console.log(error.message);
-      setIsAuthenticated(null)
+      setIsAuthenticated(false)
+    } finally {
+      setIsLoading(false);
     }
   }
   useEffect(() => {
-    // authCheck();
+    authCheck();
   }, [])
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
