@@ -47,12 +47,12 @@ export default function Navbar() {
                             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Categories
                             </a>
-                            <ul className="dropdown-menu">
+                            {/* <ul className="dropdown-menu">
                                 {
-                                    (!isLoading) && categoryList.length > 0 ? categoryList.map((item,index) => (<li key={index}><a className="dropdown-item" href="#" key={item.id}>{item.name}</a></li>)) : (<li>Loading...</li>)
+                                    (!isLoading) && categoryList?.length > 0 ? categoryList?.map((item,index) => (<li key={index}><a className="dropdown-item" href="#" key={item.id}>{item.name}</a></li>)) : (<li>Loading...</li>)
                                 }
 
-                            </ul>
+                            </ul> */}
                         </li>
                         <li className='nav-item'>
                             <form className='d-flex'>
@@ -121,13 +121,7 @@ export default function Navbar() {
                                     <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Categories
                                     </a>
-                                    <ul className="dropdown-menu">
-                                        {
-                                            (!isLoading) && categoryList.length > 0 ? categoryList.map((item,index) => (
-                                                <li key={index}><a className="dropdown-item" href="#" key={item.id}>{item.name}</a></li>
-                                            )) : (<li>Loading...</li>)
-                                        }
-                                    </ul>
+                                    {/* Add category list here */}
                                 </li>
                                 <li className="nav-item">
                                     <form className='d-flex mb-3'>

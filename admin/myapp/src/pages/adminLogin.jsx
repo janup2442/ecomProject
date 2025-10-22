@@ -44,7 +44,7 @@ export default function AdminLogin() {
     setError('')
     setLoading(true)
     try {
-      const result = await axios.post(`${import.meta.env.VITE_API_HOST}/api/admin/login`, { email: email, password },{
+      const result = await axios.post(`${import.meta.env.VITE_API_HOST}/api/admin/login`, { email: email, password : password },{
         withCredentials:true
       })
       if(result.status>=200 && result.status<400){

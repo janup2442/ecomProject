@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { login , verify } from '../../controllers/admin/adminController.js'
+import { login , verify ,register} from '../../controllers/admin/adminController.js'
 import productRouter from './productRoutes.js'
 import adminAuth from '../../middlewares/adminAuth.js'
+
 const router = Router()
 
 router.post('/login', login)
@@ -15,6 +16,6 @@ router.get('/logout', (req, res) => {
     });
     res.status(200).json({ message: 'Logged out successfully' });
 });
-// router.post('/register',register)
+router.post('/register',register)
 
 export default router

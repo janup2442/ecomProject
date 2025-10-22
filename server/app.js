@@ -19,7 +19,7 @@ dotenv.config()
 const app = express()
 
 app.use(cors({
-    origin:['http://localhost:5173','https://ecomproject-production-9f06.up.railway.app','https://6860dc43ad3d18be12fa11a9--kanpuriclassicleathers.netlify.app','https://kanpuriclassicleathers.netlify.app','https://ecom-project-lac.vercel.app'],
+    origin:['http://localhost:5173','https://ecomproject-production-9f06.up.railway.app','https://6860dc43ad3d18be12fa11a9--kanpuriclassicleathers.netlify.app','https://kanpuriclassicleathers.netlify.app','https://ecom-project-lac.vercel.app','http://127.0.0.1:5173'],
     credentials:true
 }))
 app.use(express.json())

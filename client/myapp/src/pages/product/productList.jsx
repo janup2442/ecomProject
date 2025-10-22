@@ -18,6 +18,7 @@ export default function ProductCatalog() {
             })
 
             if (result?.status >= 200 && result?.status < 400) {
+                console.log(result.data);
                 setCatalog(result.data)
             } else {
                 alert("error loading prodcuts");
@@ -45,7 +46,7 @@ export default function ProductCatalog() {
                                 </div>
                             ))
                         ) : prodcutCatalog?.length > 0 ? (
-                            prodcutCatalog.map((product) => (
+                            prodcutCatalog?.map((product) => (
                                 <div className='p-2' key={product.id}>
                                     <Link to={`/product/${product.id}`} className='text-decoration-none'>
                                         <ProductCard

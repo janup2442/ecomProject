@@ -26,25 +26,31 @@ export const login = async (req, res) => {
 
     res.status(200).json({ message: "Login successful" });
   } catch (err) {
-    res.status(500).json({ message: 'Server error' })
+    console.error('LOGIN_ERROR:', err); 
+    res.status(500).json({ message: 'Server error', error: err.message }); 
   }
+
 }
 
-// export const register = async (req, res) => {
-//   const { username, password } = req.body
-//   try {
-//     const existingAdmin = await Admin.findOne({ username })
-//     if (existingAdmin) {
-//       return res.status(400).json({ message: 'Admin already exists' })
-//     }
-//     const hashedPassword = await bcrypt.hash(password, 10)
-//     const newAdmin = new Admin({ username, password: hashedPassword })
-//     await newAdmin.save()
-//     res.status(201).json({ message: 'Admin registered successfully' })
-//   } catch (err) {
-//     res.status(500).json({ message: 'Server error' })
-//   }
-// }
+export const register = async (req, res) => {
+  const { email, password } = req.body
+  console.log(email, password);
+
+  try {
+    const existingAdmin = await Admin.findOne({ email })
+    if (existingAdmin) {
+      return res.status(400).json({ message: 'Admin already exists' })
+    }
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const newAdmin = new Admin({ email, password: hashedPassword })
+    await newAdmin.save()
+    res.status(201).json({ message: 'Admin registered successfully' })
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+    console.log(err.message);
+
+  }
+}
 
 
 
@@ -62,7 +68,7 @@ export const verify = async (req, res) => {
     }
 
 
-    res.json({message:"Login Successful"});
+    res.json({ message: "Login Successful" });
   } catch (err) {
     res.status(401).json({ message: 'Token is not valid' })
   }

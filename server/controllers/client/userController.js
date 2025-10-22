@@ -1,6 +1,8 @@
 import {User} from "../../model/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+
+
 // import { Product } from "../../model/Product.js";
 
 
@@ -39,6 +41,7 @@ export const userLogin = async (req, res) => {
     res.status(500).json({ message: 'Server error' })
   }
 }
+
 
 
 export const userRegister = async (req, res) => {

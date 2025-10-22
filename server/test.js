@@ -1,5 +1,8 @@
 import cloudinary from "./config/cloudinary.js";
 import { Product } from "./model/Product.js";
+import Admin from "./model/Admin.js";
+import connectDB from "./config/db.js";
+connectDB();
 
 const deleteAll = async ()=>{
     try{
@@ -22,7 +25,7 @@ const showproduct =async ()=>{
     }
 }
 
-showproduct();
+// showproduct();
 
 
 
@@ -40,3 +43,28 @@ const getUserData = async ()=>{
             console.log(error);
         }
 }
+
+const createAdmin = async () => {
+    try {
+        const payload = new Admin({
+            email:'kcl@co123',
+            password:'kcl@co',
+            role:'Admin'
+        })
+        console.log(payload);
+        const idk = await payload.save();
+        console.log(idk);
+        
+        console.log("data saved to database");
+        
+        
+        
+    } catch (error) {
+        console.log(error.message);
+        console.log("there is an error\n");
+        process.exit();
+        
+    }
+}
+
+createAdmin();
