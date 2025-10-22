@@ -13,6 +13,7 @@ import adminAuthRoutes from './routes/admin/authRoutes.js'
 import productRouteHandler from './routes/client/productRoutes.js'
 import userRoute from './routes/client/authRoutes.js'
 import cookieParser from 'cookie-parser'
+import mongoose from 'mongoose'
 
 
 dotenv.config()
@@ -32,7 +33,12 @@ app.use((req, res, next) => {
 app.use('/api',productRouteHandler)
 app.use('/api/admin', adminAuthRoutes)
 app.use('/user',userRoute)
-app.get('/', (req, res) => res.send('API is running...'))
+app.get('/', (req, res) => {
+    res.json({
+        connectionState : mongoose.connection.readyState,
+        messgae: "Everything is working good"
+    })
+})
 
 
 app.all('*',(req,res)=>{
